@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-public class Solve_Picnic {
+public class Solution_Picnic {
     //taken[i] : i번째 학생이 짝을 이미 찾았으면 true, 아니면 false
     public static int countPairings(int N,boolean[] taken,boolean[][] areFriends){
         //남은 학생들 중 가장 번호가 빠른 학생

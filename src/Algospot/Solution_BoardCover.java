@@ -33,6 +33,7 @@ public class Solution_BoardCover {
                  if(board[i][j] == 0) {
                      y = i;
                      x = j;
+                     System.out.println(x);
                      break;
                  }
              }
@@ -44,6 +45,7 @@ public class Solution_BoardCover {
          if( y == -1) return 1;
          int ret = 0;
          for(int type=0; type<4; type++){
+             System.out.println("type is" + type);
              if(set(board, y, x, type, 1))
                  ret += cover(board);
              set(board, y, x, type, -1);
