@@ -1,6 +1,6 @@
 package Algospot;
 import java.util.List;
-public class Ex_shortestPath {
+public class Ex6_shortestPath {
     final static int INF = 100000000;
     final static int  MAX = 1000;
     static int n; //도시의 수
