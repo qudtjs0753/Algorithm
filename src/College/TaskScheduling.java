@@ -5,24 +5,9 @@ import java.util.StringTokenizer;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.util.Arrays;
-import java.util.ArrayList;
 
 public class TaskScheduling {
-    public static class FastReader {
-        BufferedReader br;
-        public FastReader(){
-            br = new BufferedReader(new InputStreamReader(System.in));
-        }
-        String nextLine(){
-            String str = "";
-            try{
-                str = br.readLine();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-            return str;
-        }
-    }
+
     public static class Task {
         int start;
         int end;
@@ -39,45 +24,47 @@ public class TaskScheduling {
         }
     };
 
-    static Task[] task = new Task[10000000];
-    static ArrayList<Integer> machines = new ArrayList<>();
+    static Task[] task;
+    static int[] machine;
+    public static void swap(int left, int right){
+        Task temp = task[left];
+        task[left] = task[right];
+        task[right] = temp;
+    }
 
+    // 정렬된 task를 차례로 machine에 집어넣는 과정.
+//만약 넣을 수 있는 machine이 없으면 새로운 machine을 만들어낸다.
     public static int greedy(int n){
         int index = 0;
-
+        int machine_num = 0;
         boolean checkMachine;
         while(index<n){
             checkMachine = false;
-            //for문 무조건 돌아가지 않게 앞에서 처리할 방법?
-            for(int i=0; i<machines.size(); i++){
-                if(machines.get(i)<=task[index].start){
-                    machines.set(i, task[index++].end);
+            for(int i=0; i<machine_num; i++){
+                if(machine[i]<=task[index].start){
+                    machine[i] = task[index++].end;
                     checkMachine = true;
                     break;
                 }
             }
             if(!checkMachine){
-               machines.add(task[index++].end);
+                machine[machine_num++] = task[index++].end;
             }
         }
-        return machines.size();
+        return machine_num;
     }
 
 
     public static void main(String[] args) throws IOException {
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        StringTokenizer st = new StringTokenizer(br.readLine());
-        FastReader s = new FastReader();
-        int n = Integer.parseInt(s.nextLine());
-
-        //입력받는데 문제가 있는듯.
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        task = new Task[n];
+        machine = new int[n];
         for(int i=0; i<n; i++){
-            StringTokenizer input = new StringTokenizer(s.nextLine(), " ");
+            StringTokenizer input = new StringTokenizer(br.readLine(), " ");
             task[i] = new Task(Integer.parseInt(input.nextToken()),Integer.parseInt(input.nextToken()));
         }
-
         Arrays.sort(task,0,n, comp);
-
         System.out.println(greedy(n));
     }
 }
