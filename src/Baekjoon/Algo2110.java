@@ -14,18 +14,18 @@ public class Algo2110 {
     static int[] house;
     public static int findMaximumDistance(int left, int right){
         int mid = (right+left)/2;
-        int count = 0;
+        int count = 1;
         int mark = house[0];
 
         if(right<left)return right;
         else{
-            for(int i=1; i<N;i++){
-                if(house[i]-mark>=mid){
+            for(int i=0; i<N;i++){
+                if(house[i]>=mid+mark){
                     count++;
                     mark = house[i];
                 }
             }
-            if(count>=C-1)return findMaximumDistance(mid+1, right);
+            if(count>=C)return findMaximumDistance(mid+1, right);
             else return findMaximumDistance(left, mid-1);
         }
     }
@@ -40,7 +40,6 @@ public class Algo2110 {
             house[i] = Integer.parseInt(br.readLine());
         }
         Arrays.sort(house);
-        int min_length = house[N-1];
-        System.out.println(findMaximumDistance( 0, min_length));
+        System.out.println(findMaximumDistance( 1, house[N-1]-house[0]));
     }
 }
