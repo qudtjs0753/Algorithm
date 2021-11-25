@@ -26,7 +26,7 @@ public class MillerRabin {
         if(case1(base))return 1;
 
         //case2 : a^(d x 2^r) = -1(mod n)
-        return case2(base, s, a, d);
+        return case2(base, s);
     }
     public static boolean case1(long base){
         if(base!=1)
@@ -34,7 +34,7 @@ public class MillerRabin {
 
         return true;
     }
-    public static int case2(long base, int s, int a, int exp){
+    public static int case2(long base, int s){
         //0<r<s
         base = base%N;
         for(int i=0; i<s; i++){
