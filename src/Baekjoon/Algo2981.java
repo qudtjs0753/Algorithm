@@ -3,6 +3,7 @@ package Baekjoon;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,14 +19,18 @@ public class Algo2981 {
         return gcd(b, a%b);
     }
     public static void findNum(){
-        int gcd1 = paper[1]-paper[0];
+        int gcd_num = paper[1]-paper[0];
         for(int i=1; i<N-1; i++){
-            gcd1 = gcd(paper[i+1]-paper[i],gcd1);
+            gcd_num = gcd(paper[i+1]-paper[i],gcd_num);
         }
-        for(int i=2; i<=gcd1/2; i++){
-            if(gcd1%i==0)M.add(i);
+        for(int i=2; i*i<=gcd_num; i++){
+            if(i*i==gcd_num) M.add(i);
+            else if(gcd_num%i==0){
+                M.add(gcd_num/i);
+                M.add(i);
+            }
         }
-        M.add(gcd1);
+        M.add(gcd_num);
     }
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,6 +43,7 @@ public class Algo2981 {
         }
         Arrays.sort(paper);
         findNum();
+        Collections.sort(M);
         for(int i=0; i<M.size(); i++){
             bw.write(String.valueOf(M.get(i)) + " ");
         }
