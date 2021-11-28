@@ -47,12 +47,16 @@ public class MillerRabin {
 
     public static long powMod(int expo, long num){
         num = num%N;
-        long base = num;
-        for(int i=1; i<expo; i++){
-            num = (num*base)%N;
+        long ret = 1;
+        while(expo>0){
+            if (expo%2==1){
+                ret = (ret*num)%N;
+            }
+            num = (num*num)%N;
+            expo /= 2;
         }
 
-        return num;
+        return ret;
     }
 
     public static int divideExponent(int expo){
