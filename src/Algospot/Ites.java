@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 public class Ites {
     static int C,K,N;
     static final int QSIZE =  5000000;
+    //queue 직접 구현
     public static class Q {
         int[] queue = new int[QSIZE];
         int front=0, rear=0;
@@ -38,6 +39,7 @@ public class Ites {
             return ret;
         }
 
+        //이전 풀이. algospot에서 시간초과가 나서 다른 풀이로 변경
 //        public int findSubset(){
 //            RandomGenerate randomNum = new RandomGenerate();
 //            Queue<Integer> queue = new LinkedList<>();
