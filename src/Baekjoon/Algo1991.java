@@ -7,7 +7,18 @@ import java.util.StringTokenizer;
  * @Author: kbs
  */
 public class Algo1991 {
-    static int N,count;
+    static int N;
+    static class Node {
+        String root;
+        Node leftChild = null, rightChild=null;
+        Node(){
+        }
+        Node(String root){
+            this.root = root;
+        }
+
+    }
+
     public static void addNode(Node node, String rootValue, String leftValue, String rightValue){
         Node toAdd = findNode(rootValue, node);
 
@@ -73,13 +84,3 @@ public class Algo1991 {
     }
 }
 
-class Node {
-    String root;
-    Node leftChild = null, rightChild=null;
-    Node(){
-    }
-    Node(String root){
-        this.root = root;
-    }
-
-}
