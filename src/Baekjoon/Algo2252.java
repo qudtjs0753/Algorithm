@@ -1,10 +1,10 @@
 package Baekjoon;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 /**
@@ -12,11 +12,10 @@ import java.util.StringTokenizer;
  */
 public class Algo2252 {
     static int N, M;
-    static int[] inDegree;
+    static int[] inDegree,result;
     static ArrayList<Integer>[] root;
     static boolean[] visited;
     static StringBuilder sb = new StringBuilder();
-    static Stack<Integer> dfsResult = new Stack<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -26,7 +25,7 @@ public class Algo2252 {
         for(int i=0; i<=N; i++)root[i] = new ArrayList<>();
         inDegree = new int[N+1];
         visited = new boolean[N+1];
-
+        result = new int[N+1];
 
         int x, y;
         for(int i=0; i<M; i++){
@@ -35,27 +34,39 @@ public class Algo2252 {
             y = Integer.parseInt(st.nextToken());
             //큰 녀석의 아래에 작은 녀석을 추가.
             root[x].add(y);
+            inDegree[y]++;
         }
-        for(int i=1; i<=N; i++){
-            if(!visited[i])
-            topologySortByDFS(i);
-        }
-
-       while(!dfsResult.isEmpty())
-            sb.append(dfsResult.pop()).append(" ");
+        topologySort();
         System.out.println(sb);
     }
 
 
-    static void topologySortByDFS(int node){
-        visited[node] = true;
-        for(int i=0; i<root[node].size(); i++){
-            int next = root[node].get(i);
-            if(!visited[next])
-                topologySortByDFS(next);
+    static void topologySort(){
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i=1; i<=N; i++){
+            if(inDegree[i] == 0){
+                queue.add(i);
+            }
         }
-        dfsResult.push(node);
+
+        //N명에게 방문.
+        for(int i=1; i<=N; i++){
+            if(queue.isEmpty()){
+                System.out.println(1);
+                return;
+            }
+            int x = queue.poll();
+            result[i] = x;
+            for(int j=0; j<root[x].size(); j++){
+                int y = root[x].get(j);
+
+                //진입차수 0이면 큐에 삽입
+                if(--inDegree[y]==0)
+                    queue.add(y);
+            }
+        }
+        for(int i=1; i<=N; i++)
+            sb.append(result[i]).append(" ");
+
     }
-
-
 }
