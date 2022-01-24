@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 /**
  * @Author: kbs
  */
-public class Algo1922 {
+public class Algo1922_Kruskal {
     static int N, M;
     static int[] parent;
     static ArrayList<Node> network = new ArrayList<>();
