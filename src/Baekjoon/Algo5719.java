@@ -127,7 +127,6 @@ public class Algo5719 {
     }
     static class Node implements Comparable<Node> {
         int vertex, distance;
-        boolean check = false;
         public Node(int end, int distance) {
             this.vertex = end;
             this.distance = distance;
