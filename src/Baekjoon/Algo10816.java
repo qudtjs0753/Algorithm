@@ -3,8 +3,6 @@ package Baekjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
 /**
@@ -12,7 +10,6 @@ import java.util.StringTokenizer;
  */
 public class Algo10816 {
     static int N,M;
-    static ArrayList<Integer> arr = new ArrayList<>();
     static int[] result = new int[20000002];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
