@@ -41,7 +41,6 @@ public class Algo22868 {
         S = Integer.parseInt(st.nextToken());
         E = Integer.parseInt(st.nextToken());
 
-        for(int i=0; i<N+1; i++)Collections.sort(map[i]);
         bfs(S,E);
         makePath();
         bfs(E,S);
@@ -50,8 +49,9 @@ public class Algo22868 {
     }
 
 
-    private static void bfs(int start, int end){
+    private static void bfs(int start,int end){
         Queue<Integer> q = new LinkedList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         q.add(start);
         checked[start] = true;
 
@@ -64,8 +64,14 @@ public class Algo22868 {
                     depth[next]= depth[current]+1;
                     //path는 이전 경로 저장할때 사용.
                     path[next] = current;
-                    q.add(next);
+                    pq.add(next);
                 }
+                if(next == end){
+                    return;
+                }
+            }
+            while(!pq.isEmpty()){
+                q.add(pq.poll());
             }
         }
     }
