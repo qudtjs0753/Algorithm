@@ -12,53 +12,51 @@ import java.util.StringTokenizer;
  */
 public class Algo14003 {
     static int N;
+    static int[] arr, indexOrder;
+    static ArrayList<Integer> listLIS = new ArrayList<>();
     static StringBuilder sb = new StringBuilder();
 
-    static ArrayList<Integer> arr = new ArrayList<>();
-    static ArrayList<Integer> listLIS = new ArrayList<>();
-    static int[] indexOrder;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
+        arr = new int[N+1];
+        indexOrder = new int[N+1];
+
+
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N; i++){
+        for(int i=1; i<N+1; i++){
             int input = Integer.parseInt(st.nextToken());
-            arr.add(input);
+            arr[i] = input;
         }
-        indexOrder = new int[N];
+
         createTable();
         sb.append(listLIS.size()).append("\n");
-
         findLIS();
-
         System.out.println(sb);
     }
-    static void findLIS(){
+
+    private static void findLIS(){
         Stack<Integer> s = new Stack<>();
         int length = listLIS.size();
-        for(int i=N-1; i>=0; i--){
+        for(int i=N; i>=1; i--){
             if(indexOrder[i]==length){
                 length--;
-                s.push(arr.get(i));
+                s.push(arr[i]);
             }
         }
-        for(int i=0; i<N; i++)
-            System.out.println(indexOrder[i]);
-        for(int i=0; i<listLIS.size(); i++)
-            System.out.println(listLIS.get(i));
         while(!s.isEmpty()){
             sb.append(s.pop()).append(" ");
         }
     }
 
-    public static void createTable(){
-        indexOrder[0] = 1;
-        listLIS.add(arr.get(0));
+    private static void createTable(){
+        indexOrder[1] = 1;
+        listLIS.add(arr[1]);
 
-        for(int i=1; i<N; i++){
+        for(int i=2; i<=N; i++){
             //만약 이전거보다 크다면 indexOrder를 전거 +1 해줌.
             //leastLIS도 보고 갱신해줌.
-            int current = arr.get(i);
+            int current = arr[i];
             int bigestInLIS = listLIS.get(listLIS.size()-1);
             if(current > bigestInLIS){
                 listLIS.add(current);
@@ -66,21 +64,22 @@ public class Algo14003 {
             }else if(current == bigestInLIS){
                 indexOrder[i] = listLIS.size();
             }else {
-                binarySearch(0, listLIS.size()-1, i);
+                parametricSearch(0, listLIS.size()-1, i);
             }
         }
     }
 
-    private static void binarySearch(int left, int right, int index) {
+    private static void parametricSearch(int left, int right, int index) {
         int mid;
-        int key = arr.get(index);
+        int key = arr[index];
+
         while (left < right){
              mid = (left+right)/2;
 
-             if(listLIS.get(mid)>= key){
-                 right=mid;
+             if(listLIS.get(mid) >= key){
+                 right= mid-1;
              }else{
-                 left = mid+1;
+                 left = mid;
              }
         }
         listLIS.set(left, key);
