@@ -3,7 +3,6 @@ package Baekjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -29,15 +28,13 @@ public class Algo2374 {
                 st.push(num);
             }else if(st.peek() > num){
                 st.pop();
-                st.add(num);
+                st.push(num);
             }
-
-
         }
 
-        while (!st.isEmpty()) {
-            result += max-st.pop();
-        }
+
+        result += max-st.pop();
+
 
         System.out.println(result);
     }
