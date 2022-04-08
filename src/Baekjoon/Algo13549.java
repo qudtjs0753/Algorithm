@@ -11,75 +11,48 @@ import java.util.StringTokenizer;
  * @Author: kbs
  */
 public class Algo13549 {
-    static int N,K;
-    static int[] memo;
+    static int N,K,min=Integer.MAX_VALUE;
     static boolean[] visited;
-    static Queue<Integer> q = new ArrayDeque<>();
+    static Queue<int[]> q = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        memo = new int[200_001];
         visited = new boolean[200_001];
 
-        visited[N] = true;
         bfs();
-        System.out.println(memo[K]);
+        System.out.println(min);
     }
 
     private static void bfs() {
-        q.add(2*N);
-        visited[2*N]=true;
-        if(!visited[N+1]){
-            q.add(N+1);
-            visited[N+1] = true;
-            memo[N+1] = 1;
-        }
-        if(N-1>=0){
-            q.add(N-1);
-            visited[N-1] = true;
-            memo[N-1] = 1;
-        }
+        q.add(new int[]{N,0});
+        visited[N] = true;
+
 
         while(!q.isEmpty()){
-            int currentIdx = q.poll();
+            int[] current = q.poll();
+            int currentIdx = current[0];
+            int currentTime = current[1];
 
-            if(currentIdx==K)continue;
+            if(currentIdx==K)min = Math.min(min, currentTime);
             int backwardIdx = currentIdx-1;
             int forwardIdx = currentIdx+1;
             int teleportIdx = 2*currentIdx;
-            if(teleportIdx<=200_000){
-                if(visited[teleportIdx] && memo[currentIdx]<memo[teleportIdx]){
-                    q.add(teleportIdx);
-                    memo[teleportIdx] = memo[currentIdx];
-                }else if(!visited[teleportIdx]){
-                    q.add(teleportIdx);
-                    memo[teleportIdx] = memo[currentIdx];
-                    visited[teleportIdx] = true;
-                }
+            if(teleportIdx<=150_000 && !visited[teleportIdx]){
+                q.add(new int[]{teleportIdx, currentTime});
+                visited[teleportIdx] = true;
             }
-            if(forwardIdx<=200_000){
-                if(visited[forwardIdx] && memo[currentIdx]+1<memo[forwardIdx]){
-                    q.add(forwardIdx);
-                    memo[forwardIdx] = memo[currentIdx]+1;
-                }else if(!visited[forwardIdx]){
-                    q.add(forwardIdx);
-                    memo[forwardIdx] = memo[currentIdx] + 1;
-                    visited[forwardIdx] = true;
-                }
+            if(backwardIdx>=0 && !visited[backwardIdx]){
+                q.add(new int[]{backwardIdx, currentTime+1});
+                visited[backwardIdx] = true;
             }
-            if(backwardIdx>=0){
-                if(visited[backwardIdx] && memo[currentIdx]+1<memo[backwardIdx]){
-                    q.add(backwardIdx);
-                    memo[backwardIdx] = memo[currentIdx]+1;
-                }else if(!visited[backwardIdx]){
-                    q.add(backwardIdx);
-                    memo[backwardIdx] = memo[currentIdx] + 1;
-                    visited[backwardIdx] = true;
-                }
+            if(forwardIdx<=100_000 && !visited[forwardIdx]){
+                q.add(new int[]{forwardIdx, currentTime+1});
+                visited[forwardIdx] = true;
             }
+
         }
     }
 }
