@@ -19,10 +19,23 @@ public class Algo6064 {
             StringTokenizer st = new StringTokenizer(br.readLine());
             M = Integer.parseInt(st.nextToken());
             N = Integer.parseInt(st.nextToken());
-            x = Integer.parseInt(st.nextToken());
-            y = Integer.parseInt(st.nextToken());
+            //d
+            x = Integer.parseInt(st.nextToken())-1;
+            y = Integer.parseInt(st.nextToken())-1;
 
-
+            sb.append(getCalander()).append("\n");
         }
+        System.out.println(sb);
+    }
+
+    private static int getCalander() {
+        for(int i=0; i<N; i++){
+            int sum = x + i*M;
+            if(sum % N ==y){
+                return sum+1;
+            }
+        }
+
+        return -1;
     }
 }
