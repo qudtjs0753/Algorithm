@@ -14,7 +14,6 @@ public class Algo11403 {
     static int N;
     static int[][] map;
     static int[][] ans;
-    static boolean[] visited, isExist;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -22,24 +21,24 @@ public class Algo11403 {
         
         map = new int[N][N];
         ans = new int[N][N];
-        isExist = new boolean[N];
         for(int i=0; i<N; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++){
                 map[i][j] = Integer.parseInt(st.nextToken());
-                if(map[i][j]==1)
-                    isExist[i] = true;
+
             }
         }
 
-        for(int i=0; i<N; i++){
-                visited = new boolean[N];
-                bfs(i);
-        }
+        floyd();
 
         for(int i=0; i<N; i++){
             for(int j=0; j<N; j++){
-                sb.append(ans[i][j]).append(" ");
+                if(map[i][j]!=0){
+                    sb.append(1).append(" ");
+                }else{
+                    sb.append(0).append(" ");
+                }
+
             }
             sb.append("\n");
         }
@@ -47,20 +46,16 @@ public class Algo11403 {
         System.out.println(sb);
     }
 
-    private static void bfs(int idx) {
-        Queue<Integer> q = new ArrayDeque<>();
-        q.add(idx);
+    private static void floyd(){
 
-        while (!q.isEmpty()) {
-            int current = q.poll();
-
-            for(int i=0; i<N; i++){
-                if(map[current][i]==1 && !visited[i]){
-                    q.add(i);
-                    visited[i] = true;
-                    ans[idx][i] = 1;
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                for(int k=0; k<N;k++){
+                    if(map[j][k]==0 && map[j][i]!=0 && map[i][k]!=0)
+                        map[j][k] = 1;
                 }
             }
         }
     }
+
 }
