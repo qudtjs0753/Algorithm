@@ -11,17 +11,17 @@ import java.util.*;
 public class Algo9466 {
     static int T,N, count;
     static int[] arr;
-    static boolean[] checkCycle;
-    static boolean[] visit;
+    static boolean[] cycleChecked, visit;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         T = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
+
         while(T-->0){
             N = Integer.parseInt(br.readLine());
             arr = new int[N+1];
-            checkCycle = new boolean[N+1];
+            cycleChecked = new boolean[N+1];
             visit = new boolean[N+1];
 
             count = 0;
@@ -32,9 +32,8 @@ public class Algo9466 {
             }
 
             for(int i=1; i<=N; i++){
-                if(!visit[i]){
-                    findCycle(i);
-                }
+                if(!visit[i])
+                   findCycle(i);
             }
 
             sb.append(N-count).append("\n");
@@ -43,26 +42,32 @@ public class Algo9466 {
         System.out.println(sb);
     }
 
-    private static void findCycle(int current) {
+    private static void findCycle(int startIdx) {
+        List<Integer> path = new ArrayList<>();
+        int current = startIdx;
 
-        visit[current] = true;
+        while (true) {
+            visit[current] = true;
+            path.add(current);
+            int next = arr[current];
 
-        int next = arr[current];
+            if(cycleChecked[next])break;
 
-        if(!visit[next]){
-            findCycle(next);
-        }
+            if(visit[next] && !cycleChecked[next]){
+                int cyclePath = arr[next];
 
-        if(visit[next] && !checkCycle[next]){
-            int path = arr[next];
-            while(next!=path){
+                while(cyclePath!=next){
+                    count++;
+                    cyclePath = arr[cyclePath];
+                }
                 count++;
-                path = arr[path];
+                break;
             }
-            count++;
+            current = next;
         }
 
+        for(int i=0; i<path.size(); i++)
+            cycleChecked[path.get(i)] = true;
 
-        checkCycle[current] = true;
     }
 }
