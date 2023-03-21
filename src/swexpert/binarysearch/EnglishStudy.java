@@ -1,4 +1,4 @@
-package swexpert;
+package swexpert.binarysearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +12,9 @@ public class EnglishStudy {
     static boolean[] visit;
     static int[] blankCount;
     static StringBuilder sb = new StringBuilder();
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
 
         for (int testCase = 1; testCase <= T; testCase++) {
@@ -22,31 +22,50 @@ public class EnglishStudy {
             N = Integer.parseInt(st.nextToken());
             P = Integer.parseInt(st.nextToken());
 
-            st = new StringTokenizer(br.readLine());
-            result = 0;
-            blankCount = new int[LAST_DATE + 1];
-            visit = new boolean[LAST_DATE + 1];
+//            inputForBinarySearch1();
+            inputForBinarySearch2();
 
-            int maxStudyDay = 0;
-            for (int i = 1; i <= N; i++) {
-                int day = Integer.parseInt(st.nextToken());
-                visit[day + 1] = true;
-                maxStudyDay = Math.max(maxStudyDay, day + 1); //0일부터 시작한다는 것을 고려하지 못해 많이 틀림.
-            }
-            int count = 0;
-            for (int i = 1; i <= LAST_DATE; i++) {
-                if (visit[i]) blankCount[i] = count;
-                else blankCount[i] = ++count;
-            }
-
-            for (int i = 0; i < maxStudyDay; i++) {
-                binarySearch(i);
+            for (int i = 0; i < N; i++) {
+                binarySearch2(i);
             }
             sb.append("#").append(testCase).append(" ").append(result).append("\n");
         }
 
         System.out.println(sb);
     }
+
+    private static void inputForBinarySearch1() throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        result = 0;
+        blankCount = new int[LAST_DATE + 1];
+        visit = new boolean[LAST_DATE + 1];
+
+        int maxStudyDay = 0;
+        for (int i = 1; i <= N; i++) {
+            int day = Integer.parseInt(st.nextToken());
+            visit[day + 1] = true;
+            maxStudyDay = Math.max(maxStudyDay, day + 1); //0일부터 시작한다는 것을 고려하지 못해 많이 틀림.
+        }
+        int count = 0;
+        for (int i = 1; i <= LAST_DATE; i++) {
+            if (visit[i]) blankCount[i] = count;
+            else blankCount[i] = ++count;
+        }
+        result = P + 1;
+    }
+
+    private static void inputForBinarySearch2() throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        result = 0;
+        blankCount = new int[N + 1];
+
+        for (int i = 0; i < N; i++) {
+            blankCount[i] = Integer.parseInt(st.nextToken());
+        }
+
+        result = P + 1;
+    }
+
 
     /**
      * 이분탐색에서 중요한 것은 문제를 뒤집는 것.
@@ -57,11 +76,9 @@ public class EnglishStudy {
      * <p>
      * 만약 왼쪽의 공백 날짜들이 p보다 작거나 같으면 일단 추가.
      * 이후 오른쪽에서 공백이 나머지와 같아질때까지 쭉 줄인다.
-     * 11100000000100101011
-     *
      */
 
-    private static void binarySearch(int start) {
+    private static void binarySearch1(int start) {
         int lo = start, hi = LAST_DATE + 1;
         int dayCount = 0;
         int p = P;
@@ -81,4 +98,29 @@ public class EnglishStudy {
         result = Math.max(result, dayCount);
     }
 
+    /**
+     * 2번 방법
+     * 시작 날짜를 한정시켜놓고, 인덱스로 접근한다.
+     * 시작날짜는 고정됨.
+     * 다음 시작 날짜와 비교.
+     * 만약 다음 시작날짜까지 p로 커버가 불가능하다?
+     * 그러면 여기서 계산 끝내야 함.
+     */
+
+    private static void binarySearch2(int start) {
+        int lo = start, hi = N - 1;
+        int blank;
+
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            blank = (blankCount[mid] - blankCount[start] + 1) - (mid - start + 1);
+
+            if (!(blank <= P)) {
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+                result = Math.max(result, blankCount[mid] + (P - blank) - blankCount[start] + 1);
+            }
+        }
+    }
 }
