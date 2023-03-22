@@ -26,7 +26,7 @@ public class EnglishStudy {
             inputForBinarySearch2();
 
             for (int i = 0; i < N; i++) {
-                binarySearch2(i);
+                binarySearch3(i);
             }
             sb.append("#").append(testCase).append(" ").append(result).append("\n");
         }
@@ -122,5 +122,30 @@ public class EnglishStudy {
                 result = Math.max(result, blankCount[mid] + (P - blank) - blankCount[start] + 1);
             }
         }
+    }
+
+
+    /**
+     * hi가 upperbound를 가리키게 하여
+     * lowerbound를 lo가 가리키게 한다.
+     * @param start
+     */
+    private static void binarySearch3(int start) {
+        int lo = start, hi = N;
+        int blank;
+
+        while (lo + 1 < hi) {
+            int mid = (lo + hi) / 2;
+            blank = (blankCount[mid] - blankCount[start] + 1) - (mid - start + 1);
+
+            if (!(blank <= P)) {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+        }
+
+        blank = (blankCount[lo] - blankCount[start] + 1) - (lo - start + 1);
+        result = Math.max(result, blankCount[lo] + (P - blank) - blankCount[start] + 1);
     }
 }
