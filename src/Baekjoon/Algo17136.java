@@ -9,7 +9,6 @@ public class Algo17136 {
     static int[][] arr;
     static boolean[][] visit;
     static int[] count = new int[6];
-    static StringBuilder sb = new StringBuilder();
 
 
     public static void main(String[] args) throws IOException {
@@ -37,18 +36,17 @@ public class Algo17136 {
 
     private static void backtracking(int y, int x, int value) {
         if(value>=result) return;
-
-        if(y>=9 && x>9) {
-            result = Math.min(value,result);
-            return;
-        }
         //x값이 끝에 도달했으면 다음 y로 넘어간다.
-        if(x>9) {
+        if(x==10) {
             backtracking(y+1,0, value);
             return;
         }
-        //y가 끝에 도달했다는 것은 모든 지점에 방문했다는 것.
 
+        //y가 끝에 도달했다는 것은 모든 지점에 방문했다는 것.
+        if(y==10) {
+            result = Math.min(value,result);
+            return;
+        }
 
         if(arr[y][x]==0 || visit[y][x]) {
             backtracking(y, x+1, value);
@@ -59,18 +57,18 @@ public class Algo17136 {
             if(count[i]==0) continue;
             if(isInvalid(y,x,i)) continue;
             count[i] -= 1;
-            mark(y,x,i);
+            mark(y,x,i,0);
             backtracking(y, x+1, value+1);
-            mark(y,x,i);
+            mark(y,x,i,1);
             count[i] += 1;
         }
     }
 
     //표기했다가 취소하는 과정.
-    private static void mark(int y, int x, int length) {
+    private static void mark(int y, int x, int length,int num) {
         for(int i=y; i<y+length; i++) {
             for(int j=x; j<x+length; j++) {
-                visit[i][j] = !visit[i][j];
+                arr[i][j] = num;
             }
         }
     }
@@ -79,7 +77,7 @@ public class Algo17136 {
         if(y+length > 10 || x+length > 10) return true;
         for(int i=y; i<y+length; i++) {
             for(int j=x; j<x+length; j++) {
-                if(arr[i][j]==0 || visit[i][j]) {
+                if(arr[i][j]==0) {
                     return true;
                 }
             }
