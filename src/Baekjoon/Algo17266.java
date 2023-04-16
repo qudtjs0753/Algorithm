@@ -31,19 +31,4 @@ public class Algo17266 {
 
         System.out.print(minimum);
     }
-
-    private static int binarySearch(int minimum) {
-        int lo = minimum - 1, hi = 50000;
-
-        while (lo + 1 < hi) {
-            int mid = (lo + hi) / 2;
-
-            if (M * mid >= N) {
-                hi = mid;
-            } else {
-                lo = mid;
-            }
-        }
-        return hi;
-    }
 }
