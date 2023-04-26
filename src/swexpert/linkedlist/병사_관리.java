@@ -5,13 +5,11 @@ import java.util.*;
 
 public class 병사_관리 {
 
-    static int N,M;
-    static int[][] map;
-    static final int MAX_NODE = 200010;
+    static final int MAX_NODE = 200055;
     Node[] node = new Node[MAX_NODE];
     public int count = 0;
-    public int[] version = new int[100020];
-    public int[] teamForSoldier = new int[100020];
+    public int[] version = new int[100055];
+    public int[] teamForSoldier = new int[100055];
 
     public Node getNewNode(int id, Node next) {
         Node ret = node[count++];
@@ -30,7 +28,7 @@ public class 병사_관리 {
 
     public void init() {
         count = 0;
-        for(int i=0; i<200055; i++) {
+        for(int i=0; i<MAX_NODE; i++) {
             if(node[i]==null) node[i] = new Node();
         }
 
@@ -64,7 +62,7 @@ public class 병사_관리 {
         if (mChangeScore<0) {
             for (int score=1; score<=5; score++) {
                 int newScore = score+mChangeScore;
-                newScore = newScore < 1 ? 1 :(newScore > 5 ? 5 : newScore);
+                newScore = newScore < 1 ? 1 :(newScore);
                 if(score==newScore) continue;
                 if(team[mTeam].head[score].next==null) continue;
 
@@ -78,7 +76,7 @@ public class 병사_관리 {
         if (mChangeScore > 0) {
             for (int score = 5; score >= 1; score--) {
                 int newScore = score + mChangeScore;
-                newScore = newScore < 1 ? 1 : (newScore > 5 ? 5 : newScore);
+                newScore = newScore > 5  ? 5 : newScore;
                 if (score == newScore) continue;
 
                 if (team[mTeam].head[score].next == null) continue;
@@ -90,16 +88,16 @@ public class 병사_관리 {
         }
     }
     public int bestSoldier(int mTeam) {
-        for (int j = 5; j >= 1; j--) {
-            Node node = t[mTeam].head[j].nxt;
+        for (int score = 5; score >= 1; score--) {
+            Node node = team[mTeam].head[score].next;
             if (node == null) continue;
 
             int ans = 0;
             while (node != null) {
-                if (node.v == version[node.id]) {
+                if (node.value == version[node.id]) {
                     ans = ans < node.id ? node.id : ans;
                 }
-                node = node.nxt;
+                node = node.next;
             }
             if (ans != 0) return ans;
         }
