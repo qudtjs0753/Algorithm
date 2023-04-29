@@ -2,8 +2,6 @@ package swexpert.divideandconquer;
 
 import java.io.*;
 public class 염라대왕의_이름정렬 {
-
-
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {

@@ -1,16 +1,16 @@
-package swexpert.greedy;
+package swexpert.greedy.물류허브;
 
-import swexpert.greedy.UserSolution;
+import swexpert.greedy.UserSolution_물류허브;
 
 import java.util.Scanner;
 
-class Solution {
+class Solution_물류허브 {
 	private final static int MAX_N = 1400;
 	private final static int CMD_INIT = 1;
 	private final static int CMD_ADD = 2;
 	private final static int CMD_COST = 3;
 
-	private final static UserSolution usersolution = new UserSolution();
+	private final static UserSolution_물류허브 usersolution = new UserSolution_물류허브();
 
 	private static boolean run(Scanner sc) {
 		int q = sc.nextInt();

@@ -1,8 +1,8 @@
-package swexpert.greedy;
+package swexpert.greedy.물류허브;
 
 import java.util.*;
 
-class UserSolution {
+class UserSolution_물류허브 {
 
 	/**
 	 * 물류허브 설치했을 때 총 운송비용의 계산.
@@ -17,8 +17,6 @@ class UserSolution {
 	static ArrayList<Node>[] list;
 	static ArrayList<Node>[] revList;
 	static HashMap<Integer, Integer> city;
-	static int[] dist;
-	static int[] revDist;
 
 
 	public int init(int N, int sCity[], int eCity[], int mCost[]) {
@@ -36,6 +34,7 @@ class UserSolution {
 
 		list = new ArrayList[city.size()];
 		revList = new ArrayList[city.size()];
+
 		for(int i=0; i<list.length; i++) {
 			list[i] = new ArrayList<>();
 			revList[i] = new ArrayList<>();
@@ -46,17 +45,18 @@ class UserSolution {
 			revList[city.get(eCity[i])].add(new Node(city.get(sCity[i]), mCost[i]));
 		}
 		cityCount = city.size();
-		return city.size();
+		return idx;
 	}
 
 	public void add(int sCity, int eCity, int mCost) {
 		list[city.get(sCity)].add(new Node(city.get(eCity), mCost));
-		list[city.get(eCity)].add(new Node(city.get(sCity), mCost));
+		revList[city.get(eCity)].add(new Node(city.get(sCity), mCost));
 	}
 
 	public int cost(int mHub) {
-		dist = dajikstra(mHub, list);
-		revDist = dajikstra(mHub, revList);
+		int[] dist = dajikstra(city.get(mHub), list);
+		int[] revDist = dajikstra(city.get(mHub), revList);
+
 		int ret = 0;
 		for(int i=0; i<cityCount; i++) {
 			ret += dist[i];
@@ -66,21 +66,24 @@ class UserSolution {
 		return ret;
 	}
 
-	private int[] dajikstra(int mHub, ArrayList<Node>[] list) {
+	private int[] dajikstra(int mHub, ArrayList<Node>[] tempList) {
 		int[] temp = new int[cityCount];
+		boolean[] visit = new boolean[cityCount];
 		PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o.weight));
 		Arrays.fill(temp, Integer.MAX_VALUE);
-		temp[city.get(mHub)] = 0;
-		pq.add(new Node(city.get(mHub), 0));
+		temp[mHub] = 0;
+		pq.add(new Node(mHub, 0));
 
 		while(!pq.isEmpty()) {
 			Node current = pq.poll();
-			System.out.println("cur" + current.end);
-			for(Node next : list[city.get(current.end)]) {
-				int tempDist = next.weight + current.weight;
-				System.out.println(city.get(next.end));
 
-				if(tempDist < temp[city.get(next.end)]) {
+			if(visit[current.end]) continue;
+			visit[current.end] = true;
+
+			for(Node next : tempList[current.end]) {
+				int tempDist = next.weight + temp[current.end];
+
+				if(tempDist < temp[next.end]) {
 					pq.add(new Node(next.end, tempDist));
 					temp[next.end] = tempDist;
 				}
