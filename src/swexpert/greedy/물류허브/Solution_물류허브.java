@@ -1,6 +1,5 @@
 package swexpert.greedy.물류허브;
 
-import swexpert.greedy.UserSolution_물류허브;
 
 import java.util.Scanner;
 
