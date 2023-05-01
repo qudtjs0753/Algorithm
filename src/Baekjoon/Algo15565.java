@@ -27,6 +27,9 @@ public class Algo15565 {
         int[] count = new int[3];
 
         for(int start=0; start<N; start++) {
+            //여기가 핵심
+            //count[1]이 K보다 작을때만 end위치를 옮겨야 함.
+            //이거 추가하지 않아서 이전에 틀렸었다
             while(end<N-1 && count[1]<K) {
                 end++;
                 count[arr[end]]++;
