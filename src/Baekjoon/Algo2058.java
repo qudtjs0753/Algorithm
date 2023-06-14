@@ -53,12 +53,12 @@ public class Algo2058 {
             inbound[nameToIdx.get(child)]++;
             map[nameToIdx.get(parent)].add(nameToIdx.get(child));
         }
-        for (ArrayList<Integer> integers : map) Collections.sort(integers);
     }
 
     private static void getAllChild() {
         for (int i = 0; i < N; i++) {
             ArrayList<String> childs = childOfName.get(names[i]);
+            Collections.sort(childs);
             sb.append(names[i]).append(" ").append(childs.size()).append(" ");
             for (String name : childs) sb.append(name).append(" ");
             sb.append("\n");
