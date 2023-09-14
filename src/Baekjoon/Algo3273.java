@@ -1,11 +1,14 @@
 package Baekjoon;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Algo3273 {
 
-    static int N,X;
+    static int N, X;
     static int[] arr;
     static StringBuilder sb = new StringBuilder();
 
@@ -14,33 +17,37 @@ public class Algo3273 {
         StringTokenizer st = null;
 
         N = Integer.parseInt(br.readLine());
-        arr = new int[N+1];
+        arr = new int[N];
         st = new StringTokenizer(br.readLine());
-        for(int i=1; i<=N; i++) {
+        for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-        arr[0] = 200_000_000;
-        Arrays.sort(arr,1,N+1);
         X = Integer.parseInt(br.readLine());
 
-        int end = N;
-        int sum =0, beforeSum = 0;
-        for(int start=1; start<end; start++) {
-            if(arr[start]==arr[start-1]) {
-                sum += beforeSum;
-                continue;
-            }
-            beforeSum = 0;
+        Arrays.sort(arr);
+        int end = N - 1;
 
-            while(arr[start]+arr[end]>=X && end>start) {
-                if(arr[start]+arr[end]==X) {
-                    beforeSum++;
+        long result = 0;
+        int beforeCount = 0;
+
+        for (int start = 0; start < N - 1; start++) {
+            int currentCount = 0;
+
+            while (start < end && arr[start] + arr[end] >= X) {
+                if (arr[start] + arr[end] == X) {
+                    currentCount++;
                 }
                 end--;
             }
-            sum += beforeSum;
+
+            if (start != 0 && arr[start] == arr[start - 1]) {
+                result += beforeCount;
+                continue;
+            }
+            result += currentCount;
+            beforeCount = currentCount;
         }
 
-        System.out.println(sum);
+        System.out.println(result);
     }
 }
