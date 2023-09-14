@@ -22,18 +22,26 @@ public class Algo2003 {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int low = 0;
         int high = 0;
         int sum = 0;
-        while(true) {
-            if(sum>=M){
-                sum -= arr[low++];
-            }
-            else if(high>=N)break;
-            else{
+
+        //1. 합산
+        while(high<N && sum<M) {
+            sum += arr[high++];
+        }
+        if(sum==M) count++;
+
+        //2. 투포인터
+        for(int low=0; low<N-1; low++) {
+            sum -= arr[low];
+            while(high<N && sum<M) {
                 sum += arr[high++];
             }
-            if (sum == M) count++;
+
+            if(sum==M){
+                count++;
+            }
+
         }
         System.out.println(count);
     }
