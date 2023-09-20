@@ -3,6 +3,7 @@ package Baekjoon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -10,8 +11,8 @@ import java.util.StringTokenizer;
  */
 public class Algo10815 {
     static int N, M;
-    static boolean[] isIn;
-    static final int MAX = 10000000;
+    static int[] arr;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -19,19 +20,35 @@ public class Algo10815 {
 
         N = Integer.parseInt(br.readLine());
         st = new StringTokenizer(br.readLine());
-        isIn = new boolean[2*MAX+1];
-        for(int i=0; i<N; i++){
-            isIn[Integer.parseInt(st.nextToken())+MAX] = true;
-        }
+        arr = new int[N];
+        for (int i = 0; i < N; i++) arr[i] = Integer.parseInt(st.nextToken());
+
+        Arrays.sort(arr);
 
         M = Integer.parseInt(br.readLine());
+
         st = new StringTokenizer(br.readLine());
-        for(int i=0; i<M; i++){
-            if(isIn[Integer.parseInt(st.nextToken())+MAX])
-                sb.append(1).append(" ");
-            else
-                sb.append(0).append(" ");
+        for (int i = 0; i < M; i++) {
+            sb.append(isIn(Integer.parseInt(st.nextToken()))).append(" ");
         }
+
         System.out.println(sb);
+    }
+
+    private static int isIn(int key) {
+        int start = 0, end = N;
+
+        while (start + 1 < end) {
+            int mid = (start + end) / 2;
+
+            if (arr[mid] <= key) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+
+        if (arr[start] == key) return 1;
+        return 0;
     }
 }
