@@ -12,22 +12,30 @@ public class Algo2805 {
     static int N, M, maxHeight;
     static int[] arr;
     public static int binarySearch(){
-        int high = maxHeight, low = 0;
-        int mid=0;
-        while(high>low){
-            mid = (high + low)/2;
-            long sum = 0;
-            for(int i=0; i<N; i++){
-                if(arr[i]>mid)sum+=(arr[i]-mid);
-            }
-            if(sum<M){
+        int high = maxHeight+1, low = 0;
+
+        while(low+1<high) {
+            int mid = (high+low)/2;
+            long sum = calculateWoodLength(mid);
+            if(sum>=M) {
+                low = mid;
+            } else {
                 high = mid;
-            } else{
-                low = mid+1;
             }
         }
-        return low-1;
+
+        return low;
     }
+
+    private static long calculateWoodLength(long mid) {
+        long ret = 0;
+        for (int num : arr) {
+            if (mid >= num) continue;
+            ret += (long) num - mid;
+        }
+        return ret;
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
