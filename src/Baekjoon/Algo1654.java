@@ -12,17 +12,27 @@ public class Algo1654 {
     static int N, K;
     static int[] line;
     public static long parametricSearch(long minValue, long maxValue){
-        long midValue = (minValue + maxValue)/2;
-        int count =0;
-        for(int i=0; i<K; i++){
-            count += line[i]/midValue;
-        }
-        if(minValue > maxValue) return maxValue;
-        else{
-            if(count>=N) return parametricSearch(midValue +1 , maxValue);
-            else return parametricSearch(minValue, midValue-1);
+        long lo = minValue, hi = maxValue+1;
+
+        while(lo+1<hi) {
+            long mid = (lo+hi)/2;
+
+            if(getNumberOfLine(mid)>=N) {
+                lo = mid;
+            }else {
+                hi = mid;
+            }
         }
 
+        return lo;
+    }
+
+    private static long getNumberOfLine(long mid) {
+        long cnt = 0;
+        for(int i=0; i<K; i++) {
+            cnt += line[i]/mid;
+        }
+        return cnt;
     }
 
     public static void main(String[] args) throws IOException {
