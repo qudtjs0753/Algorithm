@@ -5,58 +5,55 @@ import java.util.*;
 
 public class Algo13702 {
 
-    static int N,K; //N: 주전자 수 K : 인원 수
-    static int[] mak;
-    static StringBuilder sb = new StringBuilder();
+
+    static int N,K;
+    static int[] drink;
+    private static int max = 0;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = null;
+        init();
+        solve();
+    }
 
-        st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        mak = new int[N];
-
-        for(int i=0 ;i<N; i++) {
-            mak[i] = Integer.parseInt(br.readLine());
-        }
-
+    private static void solve() {
+        max = max+1;
         System.out.println(binarySearch());
     }
 
-    //기준점을 어떻게 잡아줘야 하지?
-    //
     private static long binarySearch() {
-        long lo = -1, hi = (1<<31) -1;
-        long max = 0;
-        while(lo+1<hi) {
-            long mid = (lo+hi)/2;
-            long[] result = distributeMak(mid);
-            if(result[1]>=K) {
-                lo = mid;
-                max = Math.max(result[0], max);
+        long low = 0, high = max;
+
+        while(low+1<high) {
+            long mid = (low+high)/2;
+
+            if(getCountOfDrink(mid)>=K) {
+                low = mid;
             }else {
-                hi = mid;
+                high = mid;
             }
         }
-
-        return lo;
+        return low;
     }
 
-    private static long[] distributeMak(long mid) {
-        long sum = 0;
+    private static long getCountOfDrink(long mid) {
         long count = 0;
         for(int i=0; i<N; i++) {
-            long curCount =  mak[i] / mid;
-            sum += mid*curCount;
-            count += curCount;
+            count += drink[i]/mid;
         }
 
-        return new long[]{sum ,count};
+        return count;
     }
 
-    /**
-     * 주전자의 개수가 사람보다 많을수는 없다
-     */
+    private static void init() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = null;
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        drink = new int[N];
+        for(int i=0; i<N; i++) {
+            drink[i] = Integer.parseInt(br.readLine());
+            max = Math.max(drink[i],max);
+        }
+    }
 }
