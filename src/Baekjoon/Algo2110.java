@@ -12,22 +12,31 @@ import java.util.StringTokenizer;
 public class Algo2110 {
     static int N, C;
     static int[] house;
-    public static int findMaximumDistance(int left, int right){
-        int mid = (right+left)/2;
-        int count = 1;
-        int mark = house[0];
+    public static int findMaximumDistance(int lo, int hi){
+        while(lo+1<hi) {
+            int mid = (hi+lo)/2;
 
-        if(right<left)return right;
-        else{
-            for(int i=0; i<N;i++){
-                if(house[i]>=mid+mark){
-                    count++;
-                    mark = house[i];
-                }
+            if(getDistance(mid)>=C) {
+               lo = mid;
+            }else {
+                hi = mid;
             }
-            if(count>=C)return findMaximumDistance(mid+1, right);
-            else return findMaximumDistance(left, mid-1);
         }
+        return lo;
+    }
+
+    private static int getDistance(int mid) {
+        int current = 0;
+        int dist = 0;
+        int count = 1   ;
+        for(int i=1; i<N; i++) {
+            dist = house[i] - house[current];
+            if(dist>=mid) {
+                current = i;
+                count++;
+            }
+        }
+        return count;
     }
 
     public static void main(String[] args) throws IOException {
@@ -40,6 +49,6 @@ public class Algo2110 {
             house[i] = Integer.parseInt(br.readLine());
         }
         Arrays.sort(house);
-        System.out.println(findMaximumDistance( 1, house[N-1]-house[0]));
+        System.out.println(findMaximumDistance( 1, house[N-1]-house[0] + 1));
     }
 }
