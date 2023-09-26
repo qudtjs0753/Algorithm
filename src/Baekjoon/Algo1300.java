@@ -8,32 +8,38 @@ import java.io.InputStreamReader;
  * @Author: kbs
  */
 public class Algo1300 {
-    static int N, K;
+    static long N, K;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         K = Integer.parseInt(br.readLine());
 
-        long lo = 1;
-        long hi = K;
+        System.out.println(parametricSearch())  ;
+    }
 
-        while(lo<hi){
+    private static long parametricSearch() {
+        long lo = 0, hi = K;
 
-            long mid = (lo + hi) /2;
-            long count = 0;
+        while (lo + 1 < hi) {
+            long mid = (lo + hi) / 2;
 
-            for(int i=1; i<=N; i++){
-                count += Math.min(mid/i, N);
-            }
-
-            if(K <= count){
+            if (calculate(mid) < K) {
+                lo = mid;
+            } else {
                 hi = mid;
-            }else{
-                lo = mid+1;
             }
         }
 
-        System.out.println(lo);
+        return hi;
+    }
+
+    private static long calculate(long mid) {
+        long count = 0;
+
+        for (int i = 1; i <= N; i++) {
+            count += Math.min(mid / i, N);
+        }
+        return count;
     }
 }

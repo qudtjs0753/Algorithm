@@ -28,7 +28,7 @@ public class Algo2110 {
     private static int getDistance(int mid) {
         int current = 0;
         int dist = 0;
-        int count = 1   ;
+        int count = 1;
         for(int i=1; i<N; i++) {
             dist = house[i] - house[current];
             if(dist>=mid) {
