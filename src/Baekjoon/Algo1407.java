@@ -8,10 +8,6 @@ public class Algo1407 {
 
     public static void main(String[] args) throws IOException {
         init();
-        solve();
-    }
-
-    private static void solve() {
     }
 
     private static void init() throws IOException {
@@ -25,20 +21,15 @@ public class Algo1407 {
     }
 
     private static Long getSum(long number) {
-        long countOfSum = 0;
         long addNumber = 1;
         long ret = 0;
-        while(number>0) {
-            if(number%2==0) {
-                countOfSum=number/2;
-            }else {
-                countOfSum = number/2 + 1;
-            }
-            ret += countOfSum*addNumber;
-            addNumber*=2;
-            number -= countOfSum;
-        }
 
+        while(number>0) {
+            final long countOfOne = number%2==0 ? number/2 : number/2 + 1;
+            ret += countOfOne*addNumber;
+            addNumber*=2;
+            number /= 2;
+        }
         return ret;
     }
 }
