@@ -1,102 +1,140 @@
 package Baekjoon;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
  * @Author: kbs
  */
 public class Algo10866 {
-    static int N, back=0, front=0, size=0;
-    static int[] deque= new int[10000];
+    static int N;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         N = Integer.parseInt(br.readLine());
+        MyDeque deque = new MyDeque();
 
-        for(int i=0; i<N; i++){
+        for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            String input = st.nextToken();
-            if(input.equals("push_back")){
-                push_back(Integer.parseInt(st.nextToken()));
-            }else if(input.equals("push_front")){
-                push_front(Integer.parseInt(st.nextToken()));
-            }else if(input.equals("pop_front")){
-                sb.append(pop_front()).append("\n");
-            }else if(input.equals("pop_back")){
-                sb.append(pop_back()).append("\n");
-            }else if(input.equals("size")){
-                sb.append(size()).append("\n");
-            }else if(input.equals("empty")){
-                sb.append(empty()).append("\n");
-            }else if(input.equals("front")){
-                sb.append(front()).append("\n");
-            }else{
-                sb.append(back()).append("\n");
-            }
+            deque.execute(st);
         }
 
         System.out.println(sb);
     }
 
+    static class MyDeque {
 
-    static void push_front(int val) {
-        deque[front] = val;
-        front = (front - 1 + 10000) % 10000;
-        size++;
-    }
+        private static final int MAX_SIZE = 10000;
+        int front = 0, rear = MAX_SIZE;
+        int size = 0;
+        int[] arr = new int[MAX_SIZE + 1];
 
-    static void push_back(int val) {
-
-        back = (back + 1) % 10000;
-        size++;
-        deque[back] = val;
-    }
-
-    static int pop_front() {
-        if (size == 0) {
-            return -1;
+        void pushFront(int number) {
+            arr[front] = number;
+            front = (front + 1) % (MAX_SIZE + 1);
+            size++;
         }
 
-        int ret = deque[(front + 1) % 10000];
-        front = (front + 1) % 10000;
-        size--;
-        return ret;
-    }
-
-    static int pop_back() {
-        if (size == 0) {
-            return -1;
+        void pushBack(int number) {
+            arr[rear] = number;
+            rear = (MAX_SIZE + rear) % (MAX_SIZE + 1);
+            size++;
         }
-        int ret = deque[back];
-        back = (back - 1 + 10000) % 10000;
-        size--;
-        return ret;
-    }
 
-    static int size() {
-        return size;
-    }
-
-    static int empty() {
-        if(size == 0) {
-            return 1;
+        void popFront() {
+            if (isEmpty()) {
+                sb.append(-1).append("\n");
+                return;
+            }
+            front = (((MAX_SIZE + 1) + front - 1) % (MAX_SIZE + 1));
+            size--;
+            sb.append(arr[front]).append("\n");
         }
-        return 0;
-    }
 
-    static int front() {
-        if(size == 0) {
-            return -1;
+        void popBack() {
+            if (isEmpty()) {
+                sb.append(-1).append("\n");
+                return;
+            }
+            rear = (rear + 1) % (MAX_SIZE + 1);
+            size--;
+            sb.append(arr[rear]).append("\n");
         }
-        return deque[(front + 1) % 10000];
-    }
 
-    static int back() {
-        if(size == 0) {
-            return -1;
+        void size() {
+            sb.append(size).append("\n");
         }
-        return deque[back];
+
+        void empty() {
+            if (isEmpty()) {
+                sb.append(1).append("\n");
+                return;
+            }
+            sb.append(0).append("\n");
+        }
+
+        void front() {
+            if (isEmpty()) {
+                sb.append(-1).append("\n");
+                return;
+            }
+            sb.append(arr[(((MAX_SIZE + 1) + front - 1) % (MAX_SIZE + 1))]).append("\n");
+        }
+
+        void back() {
+            if (isEmpty()) {
+                sb.append(-1).append("\n");
+                return;
+            }
+            sb.append(arr[(rear + 1) % (MAX_SIZE + 1)]).append("\n");
+        }
+
+
+        private boolean isEmpty() {
+            if ((rear + 1) % (MAX_SIZE + 1) == front) {
+                return true;
+            }
+            return false;
+        }
+
+        public void execute(StringTokenizer st) {
+            String command = st.nextToken();
+
+            if ("push_front".equals(command)) {
+                pushFront(Integer.parseInt(st.nextToken()));
+                return;
+            }
+
+            if ("push_back".equals(command)) {
+                pushBack(Integer.parseInt(st.nextToken()));
+                return;
+            }
+
+            if ("pop_front".equals(command)) {
+                popFront();
+                return;
+            }
+
+            if ("pop_back".equals(command)) {
+                popBack();
+                return;
+            }
+            if ("size".equals(command)) {
+                size();
+                return;
+            }
+            if ("empty".equals(command)) {
+                empty();
+                return;
+            }
+            if ("front".equals(command)) {
+                front();
+                return;
+            }
+            back();
+        }
     }
 }
