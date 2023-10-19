@@ -1,51 +1,55 @@
 package Baekjoon;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-public class Algo1149 {
-    public static class Color {
-        int red, green, blue;
-        Color(int red, int green, int blue){
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
-        }
-    }
-    static int N;
-    static int[][] allHouse;
-    static Color[] house;
 
-    public static void findMin(int index){
-        if(index==0){
-            allHouse[0][0] = house[0].red;
-            allHouse[1][0] = house[0].green;
-            allHouse[2][0] = house[0].blue;
-        }
-        else{
-            if(allHouse[0][index-1] == 0)findMin(index-1);
-            allHouse[0][index] = house[index].red + Math.min(allHouse[1][index-1], allHouse[2][index-1]);
-            allHouse[1][index] = house[index].green + Math.min(allHouse[0][index-1], allHouse[2][index-1]);
-            allHouse[2][index] = house[index].blue + Math.min(allHouse[0][index-1], allHouse[1][index-1]);
-        }
-    }
+public class Algo1149 {
+    static int N;
+    static int[][] houses;
+    static int[][] memo;
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         N = Integer.parseInt(br.readLine());
-        house = new Color[N];
-        //최적의 배열 저장용.
-        allHouse = new int[3][N];
+        houses = new int[N][3];
+        memo = new int[N][3];
 
-        for(int i=0; i<N; i++){
-            StringTokenizer st = new StringTokenizer(br.readLine()," ");
-            house[i] = new Color(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            Arrays.fill(memo[i], 1_500_000);
+            houses[i][0] = Integer.parseInt(st.nextToken());
+            houses[i][1] = Integer.parseInt(st.nextToken());
+            houses[i][2] = Integer.parseInt(st.nextToken());
         }
-        findMin(N-1);
-        int result = Math.min(Math.min(allHouse[0][N-1],allHouse[1][N-1]),allHouse[2][N-1]);
-        bw.write(String.valueOf(result));
-        bw.flush();
-        bw.close();
+
+        int result = Math.min(
+                Math.min(
+                        paint(0, 0),
+                        paint(0, 1)),
+                paint(0, 2));
+
+        System.out.println(result);
+    }
+
+    private static int paint(int currentHouse, int paintColor) {
+        if (currentHouse == N) {
+            return 0;
+        }
+
+        if (memo[currentHouse][paintColor] != 1_500_000) return memo[currentHouse][paintColor];
+
+        for (int i = 0; i <= 2; i++) {
+            if (paintColor == i) continue;
+            memo[currentHouse][paintColor] =
+                    Math.min(memo[currentHouse][paintColor],
+                            paint(currentHouse + 1, i));
+        }
+        memo[currentHouse][paintColor] += houses[currentHouse][paintColor];
+
+        return memo[currentHouse][paintColor];
     }
 }
