@@ -27,29 +27,31 @@ private:
     mergeSort(strings, mid + 1, right, compare);
 
     // 정렬된 두 구간을 병합
-    int leftIdx = left;      // 왼쪽 구간 탐색 위치
-    int rightIdx = mid + 1;  // 오른쪽 구간 탐색 위치
-    int tempIdx = left;      // temp에 넣을 위치
+    int tempIdx = left;
+    int leftIdx = left;
+    int rightIdx = mid + 1; // 여기 틀렸음(나는 right라고 적어버림)
 
-    // 양쪽 다 남아있으면 비교해서 temp에 복사
     while (leftIdx <= mid && rightIdx <= right) {
-      if (compare(strings[leftIdx], strings[rightIdx]))
+      if (compare(strings[leftIdx], strings[rightIdx])) {
         copyStr(temp[tempIdx++], strings[leftIdx++]);
-      else
+      } else {
         copyStr(temp[tempIdx++], strings[rightIdx++]);
+      }
     }
 
     // 왼쪽에 남은 것 복사
-    while (leftIdx <= mid)
+    while (leftIdx <= mid) {
       copyStr(temp[tempIdx++], strings[leftIdx++]);
-
+    }
     // 오른쪽에 남은 것 복사
-    while (rightIdx <= right)
+    while (rightIdx <= right) {
       copyStr(temp[tempIdx++], strings[rightIdx++]);
+    }
 
     // temp에서 원본으로 복사
-    for (int i = left; i <= right; i++)
+    for (int i = left; i <= right; i++) {
       copyStr(strings[i], temp[i]);
+    }
   }
 
 public:
